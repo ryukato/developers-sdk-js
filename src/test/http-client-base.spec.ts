@@ -205,11 +205,12 @@ describe('http-client-base test', () => {
     expect(response["responseData"]["txHash"]).to.equal(testTxHash);
   })
 
-  it('burn service-token api test', async () => {
+  it('burn from service-token api test', async () => {
     const testContractId = "9636a07e";
     const request = {
       "ownerAddress": "tlink1fr9mpexk5yq3hu6jc0npajfsa0x7tl427fuveq",
       "ownerSecret": 'PCSO7JBIH1gWPNNR5vT58Hr2SycFSUb9nzpNapNjJFU=',
+      "fromAddress": "tlink1fr9mpexk5yq3hu6jc0npajfsa0x7tl427fuveq",
       "amount": "31"
     };
 
@@ -225,13 +226,13 @@ describe('http-client-base test', () => {
 
     stub = new MockAdapter(httpClient.getAxiosInstance());
 
-    stub.onPost(`/v1/service-tokens/${testContractId}/burn`).reply(config => {
+    stub.onPost(`/v1/service-tokens/${testContractId}/burn-from`).reply(config => {
       assertHeaders(config.headers);
       expect(config.data).to.equal(JSON.stringify(request));
       return [200, receivedData];
     });
 
-    const response = await httpClient.burnServiceToken(testContractId, request);
+    const response = await httpClient.burnFromServiceToken(testContractId, request);
     expect(response["statusCode"]).to.equal(1002);
     expect(response["responseData"]["txHash"]).to.equal(testTxHash);
   })
@@ -1211,7 +1212,7 @@ describe('http-client-base test', () => {
     });
 
     const response =
-      await httpClient.walletTransactions(testAddress, pageRequest, before, after, msgType);
+      await httpClient.walletTransactions(testAddress, pageRequest, { before, after, msgType });
     expect(response["statusCode"]).to.equal(1000);
     expect(response["responseData"][0]["txhash"]).to.equal(testTxHash);
   })
