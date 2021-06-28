@@ -205,7 +205,7 @@ describe('http-client-base test', () => {
     expect(response["responseData"]["txHash"]).to.equal(testTxHash);
   })
 
-  it('burn service-token api test', async () => {
+  it('burn from service-token api test', async () => {
     const testContractId = "9636a07e";
     const request = {
       "ownerAddress": "tlink1fr9mpexk5yq3hu6jc0npajfsa0x7tl427fuveq",
